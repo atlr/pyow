@@ -70,3 +70,10 @@ def gen_url(name, platform_arg):
             raise ValueError(ERR_NO_REGION)
         if region not in REGIONS:
             raise ValueError(ERR_NONREGION)
+        region =region.lower()
+        if '-' in name:
+            name, number =name.split('-')
+        elif '#' in name:
+            name, number =name.split('#')
+        url =BASE_URL.format(PC_URL_APPENDAGE.format(region, name, number))
+        return url

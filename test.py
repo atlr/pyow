@@ -7,6 +7,7 @@ class Test_gen_url(unittest.TestCase):
 
     FORMAT_PSN_URL ='https://playoverwatch.com/en-us/career/psn/{0}'
     FORMAT_XBL_URL ='https://playoverwatch.com/en-us/career/xbl/{0}'
+    FORMAT_PC_URL ='https://playoverwatch.com/en-us/career/pc/{0}/{1}-{2}'
     ARB_NAME ='cham'
     ARB_NUM ='223'
     HYPHENATED_NAME ='-'.join([ARB_NAME, ARB_NUM])
@@ -20,6 +21,22 @@ class Test_gen_url(unittest.TestCase):
         NAME ='#'.join([Test_gen_url.ARB_NAME, Test_gen_url.ARB_NUM])
         URL =Test_gen_url.FORMAT_XBL_URL.format(Test_gen_url.ARB_NAME)
         self.assertEqual(main.gen_url(NAME, main.XBL), URL)
+
+    def test_hyphen_name_pc_region(self):
+        NAME =Test_gen_url.HYPHENATED_NAME
+        FORMAT_REGION =main.KR.lower()
+        FORMAT_NAME =Test_gen_url.ARB_NAME
+        FORMAT_NUM =Test_gen_url.ARB_NUM
+        URL =Test_gen_url.FORMAT_PC_URL.format(FORMAT_REGION, FORMAT_NAME, FORMAT_NUM)
+        self.assertEqual(main.gen_url(NAME, (main.PC, main.KR)), URL)
+
+    def test_sharp_name_pc_region(self):
+        NAME ='#'.join([Test_gen_url.ARB_NAME, Test_gen_url.ARB_NUM])
+        FORMAT_REGION =main.EU.lower()
+        FORMAT_NAME =Test_gen_url.ARB_NAME
+        FORMAT_NUM =Test_gen_url.ARB_NUM
+        URL =Test_gen_url.FORMAT_PC_URL.format(FORMAT_REGION, FORMAT_NAME, FORMAT_NUM)
+        self.assertEqual(main.gen_url(NAME, (main.PC, main.EU)), URL)
 
     def test_nonplatform(self):
         self.assertRaises(ValueError, main.gen_url, Test_gen_url.ARB_NAME, 'NEPTUNE')
